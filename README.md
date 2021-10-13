@@ -1,11 +1,8 @@
 # formRegEAccesso
 Una piccola web app in Spring Boot con l'accesso, la registrazione e il MyAccount utilizzando le 4 operazioni CRUD
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+        String tempString = content.substring(content.indexOf("access_token")+15);
+
+        String access_token = tempString.substring(0,tempString.indexOf("\""));
+        
+        System.out.println(access_token);
