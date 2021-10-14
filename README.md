@@ -1,80 +1,65 @@
 # formRegEAccesso
 Una piccola web app in Spring Boot con l'accesso, la registrazione e il MyAccount utilizzando le 4 operazioni CRUD
 
-String LINE_FEED = "\r\n";
+System.out.println("SECONDO SERVICE");
 
-        String url = "https://login.microsoftonline.com/51cc9718-2c01-4a5b-b258-5399ebafc611/oauth2/token";
+        String group_id = "552e6dac-20af-4611-a69e-87559bd8e2de";
+        // fdb503b0-3890-4ae3-81ac-e79f4b9c4276
+        String report_id = "ec46263f-2a7a-4ff5-82c7-fa2086535a3d";
+        String bareToken2 = "Bearer "+bareToken;
+        String tempString1 ="";
 
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        String url = "https://api.powerbi.com/v1.0/myorg/groups/" + group_id + "/reports/" + report_id + "/ExportTo";
+        String LINE_FEED = "\r\n";
 
-        connection.setDoOutput(true);
-        connection.setRequestMethod("POST");
-
-        String boundary = Long.toHexString(System.currentTimeMillis());
-        connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-
-        PrintWriter writer = null;
         try {
-            writer = new PrintWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
 
-            writer.append("--" + boundary).append(LINE_FEED);
-            writer.append("Content-Disposition: form-data; name=\"grant_type\"").append(LINE_FEED).append(LINE_FEED);
-            writer.append("client_credentials");
-            writer.append(LINE_FEED);
+            final String POST_PARAMS = "{\r\n"
+                    + "          \"format\":\"PDF\",\r\n"
+                    + "          \"paginatedReportConfiguration\":{\r\n"
+                    + "            \"identities\":[\r\n"
+                    + "              {\r\n"
+                    + "                \"username\":\"daniele.ligorio-ext@ferrari.com\"\r\n"
+                    + "              }\r\n"
+                    + "            ]\r\n"
+                    + "          }\r\n"
+                    + "        }";
 
-            writer.append("--" + boundary).append(LINE_FEED);
-            writer.append("Content-Disposition: form-data; name=\"client_id\"").append(LINE_FEED).append(LINE_FEED);
-            writer.append("7cac0e6c-841a-48aa-951d-ab404a68cd69");
-            writer.append(LINE_FEED);
-
-            writer.append("--" + boundary).append(LINE_FEED);
-            writer.append("Content-Disposition: form-data; name=\"client_secret\"").append(LINE_FEED).append(LINE_FEED);
-            writer.append("p-r7Q~eAm0K_A2gQ-fJsUhVsoZyv3sLPRigAo");
-            writer.append(LINE_FEED);
-
-            writer.append("--" + boundary).append(LINE_FEED);
-            writer.append("Content-Disposition: form-data; name=\"scope\"").append(LINE_FEED).append(LINE_FEED);
-            writer.append("openid offline_access");
-            writer.append(LINE_FEED);
-
-            writer.append("--" + boundary).append(LINE_FEED);
-            writer.append("Content-Disposition: form-data; name=\"resource\"").append(LINE_FEED).append(LINE_FEED);
-            writer.append("https://analysis.windows.net/powerbi/api");
-            writer.append(LINE_FEED);
+            byte[] out = POST_PARAMS.getBytes(StandardCharsets.UTF_8);
 
 
-            writer.append(LINE_FEED);
-            writer.append("--" + boundary + "--").append(LINE_FEED);
-            writer.append(LINE_FEED);
-            writer.flush();
-            writer.close();
-        } catch (Exception e) {
-            System.out.append("Exception writing file" + e);
-        } finally {
-            if (writer != null) writer.close();
+            URL obj = new URL(url);
+            HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
+            postConnection.setRequestMethod("POST");
+            postConnection.setRequestProperty("Content-Type", "application/json");
+            postConnection.setRequestProperty("Authorization",bareToken2);
+            postConnection.setDoOutput(true);
+
+            OutputStream os = postConnection.getOutputStream();
+            os.write(out);
+            os.flush();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((postConnection.getInputStream())));
+
+            String output;
+            System.out.println("Output from Server .... \n");
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+                tempString1= tempString1+output;
+            }
+
+            postConnection.disconnect();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        System.out.println(connection.getResponseCode()); // Should be 200
-        System.out.println(connection.getResponseMessage());
+        String tempString2 = tempString1.substring(tempString1.indexOf("id")+5);
 
+        String exportID = tempString2.substring(0,tempString2.indexOf("\""));
 
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
-        }
-        in.close();
+        System.out.println("L'exportID e'"+exportID);
 
-
-        System.out.println(content);
-
-        String tempString = content.substring(content.indexOf("access_token")+15);
-
-        String bareToken = tempString.substring(0,tempString.indexOf("\""));
-
-        System.out.println(bareToken);
-
-
-        return bareToken;
+        return exportID;
