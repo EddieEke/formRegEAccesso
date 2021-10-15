@@ -1,15 +1,15 @@
 # formRegEAccesso
 Una piccola web app in Spring Boot con l'accesso, la registrazione e il MyAccount utilizzando le 4 operazioni CRUD
-            ObjectMapper mapper = new ObjectMapper();
-            jsonMap = mapper.readValue(postConnection.getInputStream(), Map.class);
-            System.out.println(jsonMap);
-            postConnection.disconnect();
+int status = con.getResponseCode();
+        System.out.println(status);
+        ObjectMapper mapper = new ObjectMapper();
+        jsonMap = mapper.readValue(con.getInputStream(), Map.class);
+        System.out.println(jsonMap);
+        con.disconnect();
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        String statusParam = (String)jsonMap.get("status");
+        if (statusParam.equals("Succeeded")){
+            return true;
         }
 
-        String exportID = (String)jsonMap.get("id");
-
+        return false;
