@@ -7,5 +7,6 @@ Si vede tutto nero perchè ho messo la modalità dark di chrome :D
 
 ![Cattura103](https://user-images.githubusercontent.com/50930132/179395531-9fe0f2d5-aa7d-4e6d-bb92-382a42d6a9c4.PNG)
 ![Cattura105](https://user-images.githubusercontent.com/50930132/179395534-6f6c92ae-a00d-4fad-ad4f-a5c7af168830.PNG)
-![Cattura101](https://user-images.githubusercontent.com/50930132/179395540-2ecd4f7a-dcd8-4589-ae1f-0cd4fb7060f4.PNG)
-![Cattura102](https://user-images.githubusercontent.com/50930132/179395541-a24a01a5-57db-4aeb-852a-75963b73a8a5.PNG)
+
+![Cattura101](https://user-images.githubusercontent.com/50930132/179395700-61d3daa8-c60c-4144-8369-70a77d2ae859.PNG)
+![Cattura102](https://user-images.githubusercontent.com/50930132/179395701-f7b1be2b-6c97-4fe6-af3f-3d20f8cca966.PNG)
